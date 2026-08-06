@@ -110,10 +110,35 @@ jobs:
           name: load-test-report
           path: tests/reports/load_test_300_report.xlsx
 
+  # 8. Android APK Native Build
+  android-apk-build:
+    name: 📱 Android APK Native Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/android-action@v2
+        with:
+          api-level: 34
+          ndk: false
+          cmake: false
+          cache: true
+      - run: chmod +x ./mobile/android/gradlew
+      - run: |
+          cd mobile/android
+          ./gradlew assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BloodAI-debug-apk
+          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+
   # 7. Compile Master Full E2E Report & Deploy
   compile-master-report:
     name: 📦 Compile Master Report & Deploy
-    needs: [selenium-website-tests, appium-android-tests, unit-tests-api, validation-tests, deployment-status-tests, load-testing-performance]
+    needs: [selenium-website-tests, appium-android-tests, unit-tests-api, validation-tests, deployment-status-tests, load-testing-performance, android-apk-build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -137,4 +162,5 @@ jobs:
           echo "| 🛡️ Validation Tests | 300 | validation-test-report | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY
           echo "| 🚀 Deployment Status | 300 | deployment-test-report | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY
           echo "| ⚡ Load Testing — Performance | 300 | load-test-report | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📱 Android APK Native Build | 1 | BloodAI-debug-apk | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY
           echo "| 📦 Full E2E Master Report | 1800 | full-e2e-report | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY

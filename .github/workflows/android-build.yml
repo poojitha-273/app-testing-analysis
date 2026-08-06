@@ -3,8 +3,7 @@ name: Android APK Build
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'mobile/android/**'
+    branches: [ main, develop ]
 
 jobs:
   build-debug-apk:
