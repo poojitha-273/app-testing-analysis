@@ -724,7 +724,9 @@ async function setupServer() {
 
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      server: { middlewareMode: true, hmr: false },
+      root: path.join(process.cwd(), "frontend"),
+      configFile: path.join(process.cwd(), "frontend", "vite.config.ts"),
+      server: { middlewareMode: true, hmr: false, ws: false },
       appType: "spa",
     });
     app.use(vite.middlewares);
@@ -737,7 +739,13 @@ async function setupServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Blood AI Full-Stack Server booted and running on port ${PORT}`);
+    console.log(`\n  =======================================================`);
+    console.log(`  🩸 Blood AI Full-Stack App Server is Running!`);
+    console.log(`  -------------------------------------------------------`);
+    console.log(`  ➜ Local:   http://localhost:${PORT}/`);
+    console.log(`  ➜ Network: http://10.11.70.137:${PORT}/`);
+    console.log(`  ➜ APK Download: http://localhost:8080/BloodAI-debug.apk`);
+    console.log(`  =======================================================\n`);
   });
 }
 
