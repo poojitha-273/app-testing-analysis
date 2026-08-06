@@ -121,10 +121,10 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: android-actions/setup-android@v3
-      - run: chmod +x ./mobile/android/gradlew
+      - uses: gradle/actions/setup-gradle@v3
       - run: |
           cd mobile/android
-          ./gradlew assembleDebug --no-daemon
+          gradle assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
           name: BloodAI-debug-apk
