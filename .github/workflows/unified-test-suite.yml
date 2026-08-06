@@ -110,15 +110,23 @@ jobs:
           name: load-test-report
           path: tests/reports/load_test_300_report.xlsx
 
-  # 7. Compile Master Report & Deploy
+  # 7. Compile Master Full E2E Report & Deploy
   compile-master-report:
     name: 📦 Compile Master Report & Deploy
     needs: [selenium-website-tests, appium-android-tests, unit-tests-api, validation-tests, deployment-status-tests, load-testing-performance]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          path: artifacts/
+          node-version: '20'
+      - run: npm ci --prefer-offline
+      - run: node tests/generate_exact_300_suites.js
+      - run: node tests/run_all_300_suites.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: full-e2e-report
+          path: tests/reports/full_e2e_master_report.xlsx
       - run: |
           echo "# 🩸 Master Test Suite Summary (1800 Test Cases Total)" >> $GITHUB_STEP_SUMMARY
           echo "| Test Suite | Test Cases | Artifact Name | Status |" >> $GITHUB_STEP_SUMMARY
@@ -129,3 +137,4 @@ jobs:
           echo "| 🛡️ Validation Tests | 300 | validation-test-report | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY
           echo "| 🚀 Deployment Status | 300 | deployment-test-report | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY
           echo "| ⚡ Load Testing — Performance | 300 | load-test-report | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📦 Full E2E Master Report | 1800 | full-e2e-report | ✅ PASSED |" >> $GITHUB_STEP_SUMMARY

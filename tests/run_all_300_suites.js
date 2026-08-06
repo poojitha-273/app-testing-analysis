@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { createSingleSuiteExcelReport } from './reports/generate_300_excel_reports.js';
+import { createFullE2EMasterReport } from './reports/generate_full_e2e_master_report.js';
 
 console.log('================================================================');
-console.log('  RUNNING ALL SUITES & GENERATING 300-CASE INDIVIDUAL EXCEL REPORTS');
+console.log('  RUNNING ALL SUITES & GENERATING 300-CASE INDIVIDUAL & MASTER EXCEL REPORTS');
 console.log('================================================================');
 
 // Load master 300 test cases database
@@ -71,8 +72,12 @@ async function runAllSuites() {
     masterSuite.load
   );
 
+  // 7. Master Full E2E Consolidated Report (1800 Cases)
+  console.log('\n[7/7] Generating Combined Full E2E Master Report (1800 Cases)...');
+  await createFullE2EMasterReport(masterSuite, 'full_e2e_master_report.xlsx');
+
   console.log('\n================================================================');
-  console.log('  SUCCESS: ALL 6 SEPARATE EXCEL REPORTS GENERATED SUCCESSFULLY');
+  console.log('  SUCCESS: ALL 6 INDIVIDUAL SUITE REPORTS & FULL E2E MASTER REPORT GENERATED');
   console.log('================================================================');
 }
 
