@@ -18,11 +18,20 @@ if (!fs.existsSync(masterPath)) {
 const masterSuite = JSON.parse(fs.readFileSync(masterPath, 'utf8'));
 
 async function runAllSuites() {
+  console.log('\nExecuting All 6 Test Suites (300 Cases Each)...');
+
+  await createSingleSuiteExcelReport('selenium_web_300_report.xlsx', 'Selenium — Website Tests', 'Selenium Web E2E', masterSuite.selenium);
+  await createSingleSuiteExcelReport('appium_android_300_report.xlsx', 'Appium — Android Tests', 'Appium Mobile E2E', masterSuite.appium);
+  await createSingleSuiteExcelReport('unit_test_300_report.xlsx', 'Unit Tests — API', 'API Unit Testing', masterSuite.unit);
+  await createSingleSuiteExcelReport('validation_test_300_report.xlsx', 'Validation Tests', 'Validation & Boundaries', masterSuite.validation);
+  await createSingleSuiteExcelReport('deployment_test_300_report.xlsx', 'Deployment Status Tests', 'Deployment & Release', masterSuite.deployment);
+  await createSingleSuiteExcelReport('load_test_300_report.xlsx', 'Load Testing — Performance', 'Load & Performance', masterSuite.load);
+
   console.log('\nGenerating Master Multi-Sheet Full E2E Excel Report (1800 Cases across 7 Sheets)...');
   await createFullE2EMasterReport(masterSuite, 'full_e2e_master_report.xlsx');
 
   console.log('\n================================================================');
-  console.log('  SUCCESS: MASTER REPORT full_e2e_master_report.xlsx GENERATED');
+  console.log('  SUCCESS: ALL REPORTS (INDIVIDUAL & MASTER) GENERATED');
   console.log('================================================================');
 }
 
