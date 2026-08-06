@@ -1,5 +1,5 @@
 /**
- * Appium Android Test Configuration for BloodAI Capacitor Mobile Application
+ * Appium Android Test Configuration for BloodAI Native Android Mobile Application
  */
 export const appiumConfig = {
   hostname: '127.0.0.1',
@@ -12,7 +12,7 @@ export const appiumConfig = {
     'appium:platformVersion': '13.0',
     'appium:appPackage': 'com.bloodai.app',
     'appium:appActivity': '.MainActivity',
-    'appium:app': './android/app/build/outputs/apk/debug/app-debug.apk',
+    'appium:app': './mobile/android/app/build/outputs/apk/debug/app-debug.apk',
     'appium:autoGrantPermissions': true,
     'appium:noReset': false,
     'appium:newCommandTimeout': 180,

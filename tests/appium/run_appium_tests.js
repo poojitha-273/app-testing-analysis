@@ -1,7 +1,7 @@
 /**
  * BLOOD-AI APPIUM MOBILE E2E TEST RUNNER
  * ========================================
- * Full Android Mobile E2E Test Suite for Blood AI Capacitor App
+ * Full Android Mobile E2E Test Suite for Blood AI Native Android App
  * App ID: com.bloodai.app
  * Platform: Android (UiAutomator2)
  *
@@ -59,7 +59,7 @@ const mobileScenarios = [
   { module: 'App Lifecycle', scenario: 'App resumes correctly after phone call interruption', category: 'Mobile Native', severity: 'High' },
   { module: 'App Lifecycle', scenario: 'App does not crash on rapid orientation change portrait↔landscape', category: 'Mobile Resilience', severity: 'High' },
   { module: 'App Lifecycle', scenario: 'App state preserved after screen rotation', category: 'Mobile Resilience', severity: 'High' },
-  { module: 'App Lifecycle', scenario: 'Capacitor WebView renders React app without white flash', category: 'Mobile UI/UX', severity: 'High' },
+  { module: 'App Lifecycle', scenario: 'Native UI renders React app without white flash', category: 'Mobile UI/UX', severity: 'High' },
   { module: 'App Lifecycle', scenario: 'Back button on Android navigates back within app screens', category: 'Mobile Native', severity: 'Critical' },
   { module: 'App Lifecycle', scenario: 'Back button on root screen shows exit confirmation dialog', category: 'Mobile Native', severity: 'High' },
   { module: 'App Lifecycle', scenario: 'App memory usage stays below 200MB under normal operation', category: 'Mobile Performance', severity: 'High' },
@@ -89,7 +89,7 @@ const mobileScenarios = [
   { module: 'Mobile Authentication', scenario: 'Blood group dropdown opens as native picker on mobile', category: 'Mobile UI/UX', severity: 'Medium' },
   { module: 'Mobile Authentication', scenario: 'Logout from mobile profile dropdown clears session', category: 'Mobile Functional', severity: 'Critical' },
   { module: 'Mobile Authentication', scenario: 'Session persistence: app reopened after close keeps user logged in', category: 'Mobile Functional', severity: 'Critical' },
-  { module: 'Mobile Authentication', scenario: 'Supabase auth state change detected within Capacitor WebView', category: 'Mobile Functional', severity: 'High' },
+  { module: 'Mobile Authentication', scenario: 'Supabase auth state change detected within Native App View', category: 'Mobile Functional', severity: 'High' },
 
   // --- MOBILE NAVIGATION ---
   { module: 'Mobile Navigation', scenario: 'Bottom navigation bar renders at bottom of screen', category: 'Mobile UI/UX', severity: 'Critical' },
@@ -141,7 +141,7 @@ const mobileScenarios = [
   { module: 'Mobile Donor Dashboard', scenario: 'Community post creation form opens on mobile tap', category: 'Mobile Functional', severity: 'Medium' },
 
   // --- MOBILE GPS MAP ---
-  { module: 'Mobile GPS Map', scenario: 'Leaflet map renders in Capacitor WebView on Android', category: 'Mobile GIS', severity: 'Critical' },
+  { module: 'Mobile GPS Map', scenario: 'Leaflet map renders in Native View on Android', category: 'Mobile GIS', severity: 'Critical' },
   { module: 'Mobile GPS Map', scenario: 'Donor location blue dot marker renders on mobile map', category: 'Mobile GIS', severity: 'High' },
   { module: 'Mobile GPS Map', scenario: 'Hospital markers render as red pins on mobile map', category: 'Mobile GIS', severity: 'High' },
   { module: 'Mobile GPS Map', scenario: 'Pinch-to-zoom in gesture increases map zoom level', category: 'Mobile Gestures', severity: 'High' },

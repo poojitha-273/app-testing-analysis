@@ -1,9 +1,0 @@
-{
-  "appId": "com.bloodai.app",
-  "appName": "Blood AI",
-  "webDir": "dist",
-  "bundledWebRuntime": false,
-  "server": {
-    "androidScheme": "https"
-  }
-}

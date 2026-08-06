@@ -9,7 +9,7 @@
  *  - API Integration Testing
  * 
  * Target App: Blood AI Emergency Clinical Command Center
- * Tech Stack: React + Express + SQLite + Supabase + Gemini AI + Leaflet Maps + Capacitor Android
+ * Tech Stack: React + Express + SQLite + Supabase + Gemini AI + Leaflet Maps + React Native Android
  */
 
 import fs from 'fs';

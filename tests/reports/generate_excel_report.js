@@ -262,7 +262,7 @@ export async function createExcelReport({
   const techStack = [
     ['Frontend', 'React 19 + TypeScript + Tailwind CSS v4 + Vite 6'],
     ['Backend', 'Node.js + Express 4 + SQLite (sql.js) + TypeScript'],
-    ['Mobile', 'Capacitor 8 + Android (UiAutomator2 via Appium)'],
+    ['Mobile', 'React Native Android (UiAutomator2 via Appium)'],
     ['AI Engine', 'Google Gemini gemini-3.5-flash via @google/genai SDK'],
     ['Auth', 'Supabase Auth (JWT) + localStorage session persistence'],
     ['Maps', 'Leaflet 1.9 + OpenStreetMap tiles'],
@@ -474,7 +474,7 @@ export async function createExcelReport({
     ['Application',        'Blood AI — Emergency Clinical Command Center'],
     ['App Version',        'v1.0.0'],
     ['Environment',        'QA / Staging (http://localhost:3000)'],
-    ['App ID (Mobile)',    'com.bloodai.app (Android Capacitor)'],
+    ['App ID (Mobile)',    'com.bloodai.app (Android React Native)'],
     ['Tech Stack',         'React 19 + Express 4 + SQLite + Supabase + Gemini AI'],
     ['Total Test Cases',   totalCount],
     ['Pass Count',         passedCount],

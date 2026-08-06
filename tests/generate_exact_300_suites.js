@@ -53,7 +53,7 @@ const webModules = [
 // 2. APPIUM ANDROID TESTS (300 Cases)
 // -------------------------------------------------------------
 const appiumModules = [
-  { name: 'App Lifecycle & Native', scenarios: ['Launch splash screen', 'Orientation change portrait/landscape', 'Background app resume', 'Android back button nav', 'App memory consumption', 'Capacitor webview sync'] },
+  { name: 'App Lifecycle & Native', scenarios: ['Launch splash screen', 'Orientation change portrait/landscape', 'Background app resume', 'Android back button nav', 'App memory consumption', 'Native UI sync'] },
   { name: 'Android Permissions', scenarios: ['Request GPS location permission', 'Camera permission grant', 'Push notification permission', 'Permission denial fallback'] },
   { name: 'Mobile Gestures & UI', scenarios: ['Touch swipe pull-to-refresh', 'Horizontal tab swipe', 'Pinch-to-zoom Leaflet map', 'Vertical list scroll smoothness', 'Bottom nav tab switch'] },
   { name: 'Mobile Donor & Hospital', scenarios: ['Emergency push notification tap', 'Mobile eligibility checker form', 'Mobile request creation', 'Click-to-call hospital hotline', 'Offline SMS backup mode'] },
@@ -85,7 +85,7 @@ const validationModules = [
 const deploymentModules = [
   { name: 'Environment & Config', scenarios: ['Process environment variables check', 'Database connection handshake', 'Vite bundle dist integrity', 'Express port 3000 binding', 'Static assets loading', 'HTTPS SSL certificate check'] },
   { name: 'Security & Compliance', scenarios: ['CORS headers configuration', 'Rate limiting protection', 'JWT token expiration check', 'Sensitive API key concealment', 'GDPR data export compliance'] },
-  { name: 'Build & Release Pipeline', scenarios: ['TypeScript compilation zero errors', 'ESBuild server bundle generation', 'Capacitor Android sync build', 'Docker container health check', 'Staging deployment smoke test'] }
+  { name: 'Build & Release Pipeline', scenarios: ['TypeScript compilation zero errors', 'ESBuild server bundle generation', 'React Native Android build', 'Docker container health check', 'Staging deployment smoke test'] }
 ];
 
 // -------------------------------------------------------------
