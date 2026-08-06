@@ -120,12 +120,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: subosito/android-action@v2
-        with:
-          api-level: 34
-          ndk: false
-          cmake: false
-          cache: true
+      - uses: android-actions/setup-android@v3
       - run: chmod +x ./mobile/android/gradlew
       - run: |
           cd mobile/android
