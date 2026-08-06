@@ -1,0 +1,196 @@
+{
+  "donors": [
+    {
+      "id": "donor_1",
+      "name": "Dr. Sarah Jenkins",
+      "bloodGroup": "O-",
+      "latitude": 37.7780,
+      "longitude": -122.4120,
+      "phone": "+1 (555) 304-2019",
+      "rating": 4.9,
+      "isAvailable": true,
+      "avatar": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=120&auto=format&fit=crop&q=80",
+      "locationName": "Sutter Health Specialty Care Center",
+      "age": 34,
+      "weight": 68.5,
+      "lastDonationDays": 95,
+      "medications": "None",
+      "healthIssues": "None",
+      "recentTattoos": false,
+      "points": 450
+    },
+    {
+      "id": "donor_2",
+      "name": "Marcus Aurelius",
+      "bloodGroup": "O-",
+      "latitude": 37.7850,
+      "longitude": -122.4010,
+      "phone": "+1 (555) 791-3048",
+      "rating": 4.8,
+      "isAvailable": true,
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80",
+      "locationName": "UCSF Health Medical Center",
+      "age": 42,
+      "weight": 85.0,
+      "lastDonationDays": 110,
+      "medications": "None",
+      "healthIssues": "None",
+      "recentTattoos": false,
+      "points": 380
+    },
+    {
+      "id": "donor_3",
+      "name": "Emily Watson",
+      "bloodGroup": "A+",
+      "latitude": 37.7730,
+      "longitude": -122.4180,
+      "phone": "+1 (555) 289-4051",
+      "rating": 4.7,
+      "isAvailable": true,
+      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80",
+      "locationName": "Mission District Urgent Care",
+      "age": 29,
+      "weight": 58.2,
+      "lastDonationDays": 65,
+      "medications": "Standard multivitamins",
+      "healthIssues": "Minor seasonal allergies",
+      "recentTattoos": false,
+      "points": 120
+    },
+    {
+      "id": "donor_4",
+      "name": "Arjun Mehta",
+      "bloodGroup": "B+",
+      "latitude": 37.7600,
+      "longitude": -122.4200,
+      "phone": "+1 (555) 890-4411",
+      "rating": 4.9,
+      "isAvailable": true,
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80",
+      "locationName": "Kaiser Permanente Center",
+      "age": 31,
+      "weight": 77.0,
+      "lastDonationDays": 180,
+      "medications": "None",
+      "healthIssues": "None",
+      "recentTattoos": false,
+      "points": 210
+    },
+    {
+      "id": "donor_5",
+      "name": "Carlos Santana",
+      "bloodGroup": "AB+",
+      "latitude": 37.7910,
+      "longitude": -122.3950,
+      "phone": "+1 (555) 345-9800",
+      "rating": 4.6,
+      "isAvailable": true,
+      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80",
+      "locationName": "Rincon Hill Clinics",
+      "age": 55,
+      "weight": 81.6,
+      "lastDonationDays": 210,
+      "medications": "Mild blood pressure pills",
+      "healthIssues": "Controlled non-severe hypertension",
+      "recentTattoos": false,
+      "points": 180
+    }
+  ],
+  "requests": [
+    {
+      "id": "req_1",
+      "patientName": "Robert Miller",
+      "bloodGroup": "O-",
+      "hospitalName": "UCSF Medical Center",
+      "unitsNeeded": 3,
+      "urgency": "CRITICAL",
+      "reason": "Acute post-trauma hemorrhaging from traffic accident.",
+      "status": "Broadcasting",
+      "latitude": 37.7630,
+      "longitude": -122.4580,
+      "donorId": "",
+      "createdAt": "2026-06-18T11:00:00.000Z",
+      "contactPhone": "+1 (555) 911-3040"
+    },
+    {
+      "id": "req_2",
+      "patientName": "Baby Angela",
+      "bloodGroup": "A-",
+      "hospitalName": "Zuckerberg San Francisco General",
+      "unitsNeeded": 1,
+      "urgency": "HIGH",
+      "reason": "Emergency neonatal substitute. Severe microcytic anemia.",
+      "status": "Broadcasting",
+      "latitude": 37.7560,
+      "longitude": -122.4040,
+      "donorId": "",
+      "createdAt": "2026-06-18T10:00:00.000Z",
+      "contactPhone": "+1 (555) 390-1049"
+    },
+    {
+      "id": "req_3",
+      "patientName": "Marcus Vance",
+      "bloodGroup": "AB+",
+      "hospitalName": "Kaiser Permanente SF",
+      "unitsNeeded": 2,
+      "urgency": "MEDIUM",
+      "reason": "Oncology chemotherapy platelet transfusion backup protocol.",
+      "status": "Broadcasting",
+      "latitude": 37.7820,
+      "longitude": -122.4380,
+      "donorId": "",
+      "createdAt": "2026-06-18T09:00:00.000Z",
+      "contactPhone": "+1 (555) 480-1209"
+    }
+  ],
+  "hospitals": [
+    {
+      "name": "California Pacific Medical Center (CPMC)",
+      "address": "1101 Van Ness Ave, San Francisco, CA 94109",
+      "phone": "+1 (415) 600-6000",
+      "bloodInventory": {
+        "O-": "CRITICAL (1 Unit)",
+        "O+": "Normal (14 Units)",
+        "A-": "Low (3 Units)",
+        "AB+": "Normal (20 Units)"
+      },
+      "contactEmail": "emergency_blood@cpmc-sutter.org"
+    },
+    {
+      "name": "Zuckerberg San Francisco General Hospital (ZSFG)",
+      "address": "1001 Potrero Ave, San Francisco, CA 94110",
+      "phone": "+1 (628) 206-8000",
+      "bloodInventory": {
+        "O-": "LOW (2 Units)",
+        "A+": "Normal (18 Units)",
+        "B-": "Low (1 Unit)",
+        "AB-": "Critical (0 Units)"
+      },
+      "contactEmail": "bloodbanksf@ucsf.edu"
+    }
+  ],
+  "posts": [
+    {
+      "id": "post_1",
+      "author": "Dr. Sarah Jenkins",
+      "role": "Chief Hematologist",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80",
+      "content": "Did you know O-Negative whole blood is critical during major trauma events? It's the only type that can be given safely to any patient when their blood group is unknown. Let's make sure our local banks are well-supplied this month!",
+      "likes": 42,
+      "comments": 8,
+      "timeAgo": "2 hours ago",
+      "tag": "Education"
+    },
+    {
+      "id": "post_2",
+      "author": "SF General Admin",
+      "role": "Hospital Dispatcher",
+      "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=120&auto=format&fit=crop&q=80",
+      "content": "Urgent O-Negative whole blood drive has been extended until Thursday. Volunteers who donate before 6 PM can earn a double Civic Honor badge!",
+      "likes": 56,
+      "comments": 12,
+      "timeAgo": "4 hours ago",
+      "tag": "Campaign"
+    }
+  ]
+}

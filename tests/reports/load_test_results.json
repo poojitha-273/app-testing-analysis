@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-08-06T09:53:48.368Z",
+  "virtualUsers": 100,
+  "durationSeconds": 60,
+  "totalRequests": 7420,
+  "rps": 123.67,
+  "throughputKBps": 36.2,
+  "avgLatencyMs": 242.1,
+  "minLatencyMs": 46.5,
+  "maxLatencyMs": 1380,
+  "p95LatencyMs": 395,
+  "p99LatencyMs": 820,
+  "errorRatePercent": 0,
+  "totalErrors": 0,
+  "slaStatus": {
+    "rps": true,
+    "avgLatency": true,
+    "maxLatency": true,
+    "p95Latency": true,
+    "errorRate": true
+  },
+  "overallStatus": "PASSED",
+  "endpointsTested": [
+    "GET  /api/health         — Server health check",
+    "GET  /api/requests       — All blood requests (polling)",
+    "POST /api/requests       — Create blood request",
+    "PUT  /api/requests/:id   — Update request status",
+    "GET  /api/users/:id      — User profile fetch",
+    "POST /api/gemini/*       — AI endpoints (matching, eligibility)"
+  ]
+}

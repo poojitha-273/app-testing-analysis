@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Blood AI</string>
+    <string name="title_activity_main">Blood AI</string>
+    <string name="package_name">com.bloodai.app</string>
+    <string name="custom_url_scheme">com.bloodai.app</string>
+</resources>

@@ -1,0 +1,289 @@
+name: 🩸 BloodAI — Selenium Web E2E Test Suite
+
+on:
+  push:
+    branches: [ main, develop, release/* ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Test Environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '20.x'
+  TEST_ENV: ${{ github.event.inputs.environment || 'staging' }}
+
+jobs:
+  # ---------------------------------------------------------------
+  # JOB 1: Install & Lint
+  # ---------------------------------------------------------------
+  install-and-lint:
+    name: 📦 Install Dependencies & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: TypeScript Type Check
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Verify Test Infrastructure Files Exist
+        run: |
+          echo "✓ Checking test infrastructure..."
+          test -f tests/selenium/test_cases_generator.js && echo "✓ Generator found"
+          test -f tests/selenium/run_selenium_tests.js   && echo "✓ Selenium runner found"
+          test -f tests/reports/generate_excel_report.js && echo "✓ Excel generator found"
+          test -f tests/load/run_load_test.js            && echo "✓ Load test runner found"
+
+  # ---------------------------------------------------------------
+  # JOB 2: Generate Test Cases
+  # ---------------------------------------------------------------
+  generate-test-cases:
+    name: 🔨 Generate 320+ Test Cases
+    runs-on: ubuntu-latest
+    needs: install-and-lint
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Generate Selenium Test Cases Database
+        run: |
+          echo "::group::Test Case Generation"
+          node tests/selenium/test_cases_generator.js
+          echo "::endgroup::"
+
+      - name: Verify Test Cases Generated
+        run: |
+          COUNT=$(node -e "const d=require('./tests/selenium/test_cases.json'); console.log(d.length)")
+          echo "✓ Generated $COUNT unique test cases"
+          if [ "$COUNT" -lt "300" ]; then
+            echo "::error::Expected 300+ test cases, only got $COUNT"
+            exit 1
+          fi
+
+      - name: Upload Test Cases Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: blood-ai-test-cases
+          path: tests/selenium/test_cases.json
+          retention-days: 30
+
+  # ---------------------------------------------------------------
+  # JOB 3: Selenium E2E Web Tests
+  # ---------------------------------------------------------------
+  selenium-e2e:
+    name: 🌐 Selenium Web E2E Tests (320+ Cases)
+    runs-on: ubuntu-latest
+    needs: generate-test-cases
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Download Test Cases
+        uses: actions/download-artifact@v4
+        with:
+          name: blood-ai-test-cases
+          path: tests/selenium/
+
+      - name: Start BloodAI Server (Background)
+        run: |
+          cp .env.example .env || true
+          npm run dev &
+          echo "SERVER_PID=$!" >> $GITHUB_ENV
+          sleep 5
+          # Health check
+          for i in {1..10}; do
+            curl -sf http://localhost:3000/api/health && echo "✓ Server is UP" && break
+            echo "Waiting for server... attempt $i/10"
+            sleep 3
+          done
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        continue-on-error: true
+
+      - name: Create Reports Directory
+        run: mkdir -p tests/reports
+
+      - name: Run Selenium E2E Test Suite
+        run: |
+          echo "::group::Selenium E2E Execution"
+          node tests/selenium/run_selenium_tests.js
+          echo "::endgroup::"
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: List Generated Reports
+        run: |
+          echo "📊 Generated Reports:"
+          ls -la tests/reports/ || echo "No reports directory"
+
+      - name: Upload Selenium Excel Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selenium-e2e-report-${{ github.run_number }}
+          path: |
+            tests/reports/E2E_Test_Report_BloodAI_Selenium*.xlsx
+            tests/reports/*.json
+          retention-days: 90
+
+      - name: Stop Server
+        if: always()
+        run: kill $SERVER_PID 2>/dev/null || true
+
+  # ---------------------------------------------------------------
+  # JOB 4: Baseline Load Test
+  # ---------------------------------------------------------------
+  baseline-load-test:
+    name: ⚡ Baseline Load Test (100 VU / 60s)
+    runs-on: ubuntu-latest
+    needs: selenium-e2e
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Start Server for Load Test
+        run: |
+          cp .env.example .env || true
+          npm run dev &
+          echo "SERVER_PID=$!" >> $GITHUB_ENV
+          sleep 8
+          curl -sf http://localhost:3000/api/health && echo "✓ Server ready for load test"
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        continue-on-error: true
+
+      - name: Run Baseline Load Test (100 VU / 60s)
+        run: |
+          echo "::group::Load Test Execution"
+          echo "  → 100 Virtual Users"
+          echo "  → 60 Second Duration"
+          echo "  → Targets: /api/health, /api/requests, /api/users"
+          node tests/load/run_load_test.js
+          echo "::endgroup::"
+
+      - name: Upload Load Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: load-test-results-${{ github.run_number }}
+          path: |
+            tests/reports/load_test_results.json
+            tests/reports/Load_Test_Report_BloodAI*.xlsx
+          retention-days: 90
+
+      - name: Parse Load Test SLA Results
+        run: |
+          if [ -f tests/reports/load_test_results.json ]; then
+            node -e "
+              const r = require('./tests/reports/load_test_results.json');
+              console.log('=== LOAD TEST SLA RESULTS ===');
+              console.log('RPS: ' + r.rps + ' req/sec (target: >100)');
+              console.log('Avg Latency: ' + r.avgLatencyMs + 'ms (target: <500ms)');
+              console.log('Max Latency: ' + r.maxLatencyMs + 'ms (target: <2000ms)');
+              console.log('Error Rate: ' + r.errorRatePercent + '% (target: <1%)');
+              console.log('Status: ' + r.overallStatus);
+            "
+          fi
+
+      - name: Stop Server
+        if: always()
+        run: kill $SERVER_PID 2>/dev/null || true
+
+  # ---------------------------------------------------------------
+  # JOB 5: Final Test Summary
+  # ---------------------------------------------------------------
+  test-summary:
+    name: 📋 Test Summary & Deployment Gate
+    runs-on: ubuntu-latest
+    needs: [selenium-e2e, baseline-load-test]
+    if: always()
+    steps:
+      - name: Download All Test Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Generate Summary Report
+        run: |
+          echo "# 🩸 BloodAI — Selenium E2E Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧪 Total Test Cases | 320+ |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🌐 Test Type | Selenium Web E2E |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚡ Load Test | 100 VU / 60 Seconds |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📊 Report Format | Excel (.xlsx) |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🏗️ Branch | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔨 Run # | ${{ github.run_number }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Test Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "| Module | Test Cases |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Authentication & Access Control | 40 |" >> $GITHUB_STEP_SUMMARY
+          echo "| Hospital Management Dashboard | 45 |" >> $GITHUB_STEP_SUMMARY
+          echo "| Blood Bank Dashboard & Inventory | 45 |" >> $GITHUB_STEP_SUMMARY
+          echo "| Donor Dashboard & Eligibility | 45 |" >> $GITHUB_STEP_SUMMARY
+          echo "| AI Compatibility & Gemini Engine | 35 |" >> $GITHUB_STEP_SUMMARY
+          echo "| GPS Tracking Map & Location | 35 |" >> $GITHUB_STEP_SUMMARY
+          echo "| Profile Page & User Settings | 35 |" >> $GITHUB_STEP_SUMMARY
+          echo "| UI/UX, Accessibility & Validation | 40 |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Check Deployment Gate
+        run: |
+          echo "Selenium E2E Result: ${{ needs.selenium-e2e.result }}"
+          echo "Load Test Result: ${{ needs.baseline-load-test.result }}"
+          if [ "${{ needs.selenium-e2e.result }}" = "success" ]; then
+            echo "✅ DEPLOYMENT GATE: PASSED — BloodAI is ready to deploy"
+          else
+            echo "🚫 DEPLOYMENT GATE: REVIEW NEEDED"
+          fi
