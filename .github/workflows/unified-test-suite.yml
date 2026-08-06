@@ -1,4 +1,4 @@
-name: 🚀 BloodAI — Master 1800 Multi-Suite CI/CD Pipeline
+name: 🚀 BloodAI — Unified E2E & Multi-Suite CI/CD Pipeline
 
 on:
   push:
@@ -110,7 +110,7 @@ jobs:
           name: load-test-report
           path: tests/reports/load_test_300_report.xlsx
 
-  # 7. Compile Master Report & Summary
+  # 7. Compile Master Report & Deploy
   compile-master-report:
     name: 📦 Compile Master Report & Deploy
     needs: [selenium-website-tests, appium-android-tests, unit-tests-api, validation-tests, deployment-status-tests, load-testing-performance]
